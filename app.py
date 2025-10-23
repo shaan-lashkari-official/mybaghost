@@ -11,7 +11,6 @@ AIRTABLE_TOKEN = os.getenv("AIRTABLE_TOKEN")
 AIRTABLE_BASEID = os.getenv("AIRTABLE_BASEID")
 AIRTABLE_ = os.getenv("AIRTABLE_TOKEN")
 SECRET_KEY = os.getenv("SECRET_KEY")
-app.secret_key = SECRET_KEY
 # Returns the current local date
 today = d.today()
 print("Today date is: ", today)
