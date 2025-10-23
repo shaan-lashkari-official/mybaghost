@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Vago MyBag - JNS | Home</title>
+<style>
+  /* Glassmorphism Form Card */
+  .form-card {
+    background: rgba(20, 22, 26, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0 0 25px rgba(0, 180, 216, 0.1);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .form-card:hover {
+    box-shadow: 0 0 35px rgba(0, 180, 216, 0.25);
+    transform: translateY(-4px);
+  }
+
+  label {
+    font-weight: 500;
+    color: #d4d4d4;
+  }
+
+  select, input {
+    background-color: #1b1f23 !important;
+    color: #f8f9fa !important;
+    border: 1px solid #333 !important;
+  }
+
+  select:focus, input:focus {
+    border-color: #00b4d8 !important;
+    box-shadow: 0 0 0 0.2rem rgba(0,180,216,0.25) !important;
+  }
+
+  .btn-submit {
+    background-color: #00b4d8;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 10px 20px;
+    border: none;
+    transition: 0.3s;
+    width: 100%;
+  }
+
+  .btn-submit:hover {
+    background-color: #0091ad;
+    transform: scale(1.03);
+  }
+
+  .teacher-footer {
+    background-color: #0a0c0f;
+    border-top: 1px solid #1c1f23;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .teacher-footer button {
+    background-color: #198754;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: white;
+    transition: 0.3s;
+  }
+
+  .teacher-footer button:hover {
+    background-color: #157347;
+    transform: scale(1.05);
+  }
+
+  .page-title {
+    text-align: center;
+    font-weight: 700;
+    color: #00b4d8;
+    margin-bottom: 1.5rem;
+    font-size: 1.7rem;
+    letter-spacing: 1px;
+  }
+</style>
+{% endblock %}
+
+{% block navbar %}
+<li class="nav-item">
+  <a class="nav-link" href="#">Home</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#">About</a>
+</li>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5 mb-5">
+  <div class="form-card">
+    <div class="page-title">Student Access Portal</div>
+    <form action="/student" method="POST">
+      <div class="mb-3">
+        <label class="form-label">Grade:</label>
+        <select class="form-control" name="grade" required>
+          {% for i in range(1, 13) %}
+          <option>{{ i }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Section / Division:</label>
+        <select class="form-control" name="division" required>
+          <option>A</option><option>B</option><option>C</option>
+          <option>D</option><option>E</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Name:</label>
+        <input type="text" class="form-control" name="name" placeholder="Enter your full name" required>
+      </div>
+
+      <div class="text-center mt-3">
+        <div class="g-recaptcha" data-sitekey="6Le7dmAlAAAAACAJOM9WDG0AoAEJiTmY4M4oT82v"></div>
+      </div>
+
+      <br>
+      <button type="submit" class="btn-submit">Submit</button>
+    </form>
+  </div>
+</div>
+
+<!-- Teacher Login Fixed Footer -->
+<div class="teacher-footer">
+  <a href="{{ url_for('teacher') }}">
+    <button>Login as Teacher</button>
+  </a>
+</div>
+{% endblock %}
+
+{% block siuu %}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+<script src="https://www.google.com/recaptcha/enterprise.js?render=6LfdBGAlAAAAAMluYS-7LkzSBiy6DJT5C5sfSsFD"></script>
+<script>
+  function onSubmit(token) {
+    document.getElementById("exampleFormControlInput1").submit();
+  }
+</script>
+{% endblock %}

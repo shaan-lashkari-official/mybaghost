@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Teacher Login - Vago MyBag</title>
+<style>
+  body {
+    background-color: #0f1115;
+  }
+
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+  }
+
+  .login-card {
+    background: rgba(25, 28, 33, 0.75);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 30px rgba(0, 180, 216, 0.15);
+    padding: 2.5rem;
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .login-card:hover {
+    box-shadow: 0 0 40px rgba(0, 180, 216, 0.3);
+    transform: translateY(-3px);
+  }
+
+  .login-title {
+    color: #00b4d8;
+    font-weight: 700;
+    font-size: 1.7rem;
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    font-weight: 500;
+    color: #e4e4e4;
+    text-align: left;
+    display: block;
+  }
+
+  input {
+    background-color: #1b1f23 !important;
+    color: #f8f9fa !important;
+    border: 1px solid #333 !important;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    padding: 10px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  input:focus {
+    border-color: #00b4d8 !important;
+    box-shadow: 0 0 5px rgba(0,180,216,0.4);
+  }
+
+  .btn-submit {
+    background-color: #00b4d8;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 10px 25px;
+    border: none;
+    width: 100%;
+    transition: 0.3s;
+  }
+
+  .btn-submit:hover {
+    background-color: #0091ad;
+    transform: scale(1.03);
+  }
+
+  .error-msg {
+    color: #ff4d4d;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  /* Footer for Student Login */
+  .student-footer {
+    background-color: #0a0c0f;
+    border-top: 1px solid #1c1f23;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .student-footer button {
+    background-color: #198754;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: white;
+    transition: 0.3s;
+  }
+
+  .student-footer button:hover {
+    background-color: #157347;
+    transform: scale(1.05);
+  }
+</style>
+{% endblock %}
+
+{% block navbar %}
+<li class="nav-item">
+  <a class="nav-link active" aria-current="page" href="/teacher-dashboard">Dashboard</a>
+</li>
+{% endblock %}
+
+{% block body %}
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-title">Teacher Login</div>
+
+    <form action="/teacherSubmitForm" method="POST">
+      <div class="mb-3">
+        <label for="uid" class="form-label">Username:</label>
+        <input type="text" class="form-control" name="uid" id="uid" placeholder="Enter your ID" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password:</label>
+        <input type="password" class="form-control" name="password" id="password" placeholder="Enter your password" required>
+      </div>
+
+      <div class="text-center mt-3">
+        <div class="g-recaptcha" data-sitekey="6Le7dmAlAAAAACAJOM9WDG0AoAEJiTmY4M4oT82v"></div>
+      </div>
+
+      <br>
+      <button type="submit" class="btn-submit">Login</button>
+    </form>
+
+    {% if message %}
+    <div class="error-msg">{{ message }}</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block siuu %}
+<!-- Student Login Footer -->
+<div class="student-footer">
+  <a href="{{ url_for('single') }}">
+    <button>Login as Student</button>
+  </a>
+</div>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

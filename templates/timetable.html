@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+  body {
+    background: linear-gradient(135deg, #001f3f, #003366, #004080);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+  }
+
+  .timetable-container {
+    margin-top: 60px;
+    padding: 30px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+
+  h2 {
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-weight: 500;
+  }
+
+  select.form-select {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    border-radius: 10px;
+    transition: 0.2s;
+  }
+
+  select.form-select:focus {
+    outline: 2px solid #00bfff;
+    background: rgba(255,255,255,0.2);
+  }
+
+  select option {
+    color: black;
+  }
+
+  .day-header {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 12px 5px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .period-row {
+    padding: 10px 0;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #0074D9, #00bfff);
+    border: none;
+    border-radius: 12px;
+    padding: 10px 25px;
+    font-weight: 500;
+    transition: 0.3s;
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #00bfff, #0074D9);
+    box-shadow: 0 0 12px #00bfff;
+  }
+
+  .form-header {
+    margin-bottom: 25px;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    padding-bottom: 15px;
+  }
+
+  .table-scroll::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .table-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .day-header {
+      font-size: 12px;
+      padding: 8px;
+    }
+
+    .period-row {
+      font-size: 13px;
+    }
+
+    .timetable-container {
+      padding: 15px;
+    }
+
+    select.form-select {
+      font-size: 12px;
+      padding: 6px;
+    }
+
+    .btn-primary {
+      width: 100%;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block navbar %}{% endblock %}
+
+{% block body %}
+<body data-bs-theme="dark">
+
+  <div class="container timetable-container">
+    <h2>🗓️ Class Timetable</h2>
+
+    <div class="form-header">
+      <div class="row g-2 align-items-center">
+        <div class="col-5 col-md-3 text-end">
+          <label for="class-select" class="form-label">Timetable For:</label>
+        </div>
+        <div class="col-7 col-md-4">
+          <select class="form-select" disabled>
+            <option>{{ credentials }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-scroll">
+      <div class="row text-center mb-2">
+        <div class="col"><b>#</b></div>
+        <div class="col day-header">Mon</div>
+        <div class="col day-header">Tue</div>
+        <div class="col day-header">Wed</div>
+        <div class="col day-header">Thu</div>
+        <div class="col day-header">Fri</div>
+        <div class="col day-header">Sat</div>
+      </div>
+
+      <form action="/submitTimetable" method="POST">
+        <!-- {% for i in range(0,9) %} -->
+        <div class="row text-center period-row">
+          <div class="col">Period - {{ i }}</div>
+
+          {% set days = ['monday','tuesday','wednesday','thursday','friday','saturday'] %}
+          {% for day in days %}
+          <div class="col">
+            <select class="form-select" name="{{ day }}-period_{{ i }}" aria-label="Select {{ day }}">
+              {% if class_timetable_stat == False %}
+                <option selected value="-">-</option>
+              {% else %}
+                <option selected value="{{ timetable_data[i]['fields'][day] }}">{{ timetable_data[i]['fields'][day] }}</option>
+              {% endif %}
+              {% for value in subject %}
+                <option value="{{ value }}">{{ value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          {% endfor %}
+        </div>
+        <!-- {% endfor %} -->
+
+        <div class="text-end mt-4">
+          <button type="submit" class="btn btn-primary">Submit Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+{% endblock %}
+
+{% block siuu %}{% endblock %}

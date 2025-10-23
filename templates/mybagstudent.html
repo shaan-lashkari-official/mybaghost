@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Vago MyBag - JNS | Student MyBag</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap');
+
+  body {
+    background: linear-gradient(135deg, #0a0c14, #121829);
+    font-family: 'Roboto', sans-serif;
+    color: #e0e0e0;
+  }
+
+  .mybag-container {
+    margin: 60px auto;
+    background: rgba(20, 25, 45, 0.85);
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 0 40px rgba(0, 191, 255, 0.3), 0 0 60px rgba(0, 191, 255, 0.2) inset;
+    backdrop-filter: blur(15px);
+    max-width: 1000px;
+    transition: 0.3s ease;
+  }
+
+  h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: #00e0ff;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 25px;
+    text-shadow: 0 0 10px rgba(0, 224, 255, 0.7);
+  }
+
+  label {
+    color: #9bb0d4;
+    font-weight: 500;
+  }
+
+  select.form-select, input.form-control {
+    background: rgba(30, 35, 55, 0.85);
+    border: 1px solid #00bfff;
+    border-radius: 12px;
+    color: #e0e0e0;
+    transition: 0.3s;
+  }
+
+  select.form-select:focus, input.form-control:focus {
+    border-color: #00e0ff;
+    box-shadow: 0 0 10px #00e0ff;
+    background: rgba(40, 45, 70, 0.95);
+    outline: none;
+  }
+
+  .row {
+    margin-bottom: 18px;
+    align-items: center;
+  }
+
+  .checkbox-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .period-label {
+    font-weight: 700;
+    color: #00e0ff;
+    text-shadow: 0 0 6px #00e0ff;
+  }
+
+  hr {
+    border-color: rgba(0, 191, 255, 0.2);
+  }
+
+  .submit-btn {
+    background: linear-gradient(90deg, #00e0ff, #0077ff);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 15px;
+    padding: 12px 25px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 20px rgba(0,224,255,0.5);
+    transition: 0.4s;
+  }
+
+  .submit-btn:hover {
+    background: linear-gradient(90deg, #00ffff, #00bfff);
+    box-shadow: 0 0 25px rgba(0,224,255,0.8), 0 0 50px rgba(0,224,255,0.3) inset;
+    transform: translateY(-2px);
+  }
+
+  .subject-select {
+    transition: 0.3s;
+  }
+  .subject-select:hover {
+    background: rgba(50, 55, 90, 0.95);
+    box-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .row > div {
+      margin-bottom: 12px;
+    }
+    .mybag-container {
+      padding: 25px;
+    }
+    h2 {
+      font-size: 1.7rem;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block navbar %}
+<li class="nav-item">
+  <a class="nav-link active text-info" aria-current="page" href="/teacher-dashboard">
+    Dashboard
+  </a>
+</li>
+{% endblock %}
+
+{% block body %}
+<div class="container mybag-container">
+  <h2>📚 Student MyBag</h2>
+
+  <div class="row mb-3">
+    <div class="col-2"><label>Class/Division:</label></div>
+    <div class="col-6">
+      <select class="form-select" disabled>
+        <option>{{myBagData[0]['fields']['classDivision']}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-2"><label>Day:</label></div>
+    <div class="col-5">
+      <select class="form-select" disabled>
+        <option>{{myBagData[0]['fields']['day']}}</option>
+      </select>
+    </div>
+    <div class="col-2"><label>Date:</label></div>
+    <div class="col-3">
+      <input type="date" class="form-control" disabled>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row fw-bold mb-2 text-center">
+    <div class="col-2">Period</div>
+    <div class="col-2">Subject</div>
+    <div class="col-2">TextBook</div>
+    <div class="col-2">NoteBook</div>
+    <div class="col-2">WorkBook</div>
+  </div>
+
+  <form action="/submitMyBag" method="POST">
+    <!-- {% for i in range(0,8) %} -->
+    <div class="row text-center mb-3 align-items-center">
+      <div class="col-2 period-label">{{ i+1 }}</div>
+
+      <div class="col-2">
+        <select class="form-select subject-select" disabled>
+          <option>{{ myBagData[i]['fields']['subjectName'] }}</option>
+        </select>
+      </div>
+
+      <div class="col-2 checkbox-center">
+        <input type="checkbox" name="textbook-period" {% if myBagData[i]['fields']['textbook'] %} checked {% endif %} disabled>
+      </div>
+
+      <div class="col-2 checkbox-center">
+        <input type="checkbox" name="notebook-period" {% if myBagData[i]['fields']['notebook'] %} checked {% endif %} disabled>
+      </div>
+
+      <div class="col-2 checkbox-center">
+        <input type="checkbox" name="workbook-period" {% if myBagData[i]['fields']['workbook'] %} checked {% endif %} disabled>
+      </div>
+    </div>
+    <hr>
+    <!-- {% endfor %} -->
+
+
+  </form>
+</div>
+{% endblock %}
+
+{% block siuu %}
+{% endblock %}
